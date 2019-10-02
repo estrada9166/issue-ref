@@ -1,0 +1,12 @@
+name: 'Issue ref'
+description: 'Reference an issue to a PR'
+branding:
+  icon: 'at-sign'
+  color: 'green'
+author: 'estrada9166'
+inputs:
+  GITHUB_TOKEN:
+    description: 'The GITHUB_TOKEN secret'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'

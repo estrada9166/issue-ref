@@ -19,7 +19,7 @@ async function run() {
     const { branch, prNumber } = prInfo
     const issueNumber = branch.split('-').pop()
 
-    if (!issueNumber || !!parseInt(issueNumber)) {
+    if (!issueNumber || !parseInt(issueNumber)) {
       console.log('Could not get the issueNumber, exiting')
       return
     }

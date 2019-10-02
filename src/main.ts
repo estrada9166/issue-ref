@@ -18,6 +18,12 @@ async function run() {
 
     const { branch, prNumber } = prInfo
     const issueNumber = branch.split('-').pop()
+
+    if (!issueNumber || !!parseInt(issueNumber)) {
+      console.log('Could not get the issueNumber, exiting')
+      return
+    }
+
     const text = `This PR closes: #${issueNumber}`
 
     const client = new github.GitHub(token)

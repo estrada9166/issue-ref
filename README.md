@@ -18,3 +18,6 @@ jobs:
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 ```
+
+### Example
+![example](https://raw.githubusercontent.com/estrada9166/issue-ref/master/images/example.gif)

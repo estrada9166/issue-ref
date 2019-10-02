@@ -18,7 +18,7 @@ async function run() {
 
     const { branch, prNumber } = prInfo
     const issueNumber = branch.split('-').pop()
-    const text = `This PR close: #${issueNumber}`
+    const text = `This PR closes: #${issueNumber}`
 
     const client = new github.GitHub(token)
     await createComment(client, prNumber, text)
@@ -29,8 +29,7 @@ async function run() {
 }
 
 function getPRInfo(): PRInfo | undefined {
-  console.log('-----1>', JSON.stringify(github.context.payload))
-  const pr = github.context.payload
+  const pr = github.context.payload.pull_request
   if (!pr) {
     return
   }

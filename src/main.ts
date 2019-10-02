@@ -29,6 +29,7 @@ async function run() {
 }
 
 function getPRInfo(): PRInfo | undefined {
+  console.log('-----1>', JSON.stringify(github.context.payload))
   const pr = github.context.payload
   if (!pr) {
     return

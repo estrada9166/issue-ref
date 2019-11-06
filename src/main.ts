@@ -17,10 +17,18 @@ async function run() {
     }
 
     const { branch, prNumber } = prInfo
-    const issueNumber = branch.split('-').pop()
+    let issueNumber
+    for (const part of branch.split(/[-:_\W#]+/g)) {
+      issueNumber = parseInt(part)
+      if (issueNumber) {
+        break
+      }
+    }
 
-    if (!issueNumber || !parseInt(issueNumber)) {
-      console.log('Could not get the issueNumber, exiting')
+    if (!issueNumber) {
+      console.log(
+        `Could not get the issueNumber from branch name ${branch}, exiting`
+      )
       return
     }
 

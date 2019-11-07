@@ -44,7 +44,9 @@ async function run() {
       return
     }
 
-    const text = `This PR closes #${issueNumbers.join(', #')}`
+    const uniqueIssueNumbers = Array.from(new Set(issueNumbers))
+
+    const text = `This PR closes #${uniqueIssueNumbers.join(', #')}`
 
     const client = new github.GitHub(token)
     await createComment(client, prNumber, text)

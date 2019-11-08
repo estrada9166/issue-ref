@@ -7,6 +7,10 @@ author: 'estrada9166'
 inputs:
   GITHUB_TOKEN:
     description: 'The GITHUB_TOKEN secret'
+  MODIFY_DESCRIPTION:
+    description: 'Modify PR description instead of adding a comment.'
+    required: false
+    default: 'true'
 runs:
   using: 'node12'
   main: 'lib/main.js'

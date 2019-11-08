@@ -8,9 +8,15 @@ type PRInfo = {
   commits: octokit.PullsListCommitsResponse
 }
 
+const ISSUES_START_TAG = '<issues>'
+const ISSUES_END_TAG = '</issues>'
+
 async function run() {
   try {
     const token = core.getInput('GITHUB_TOKEN', { required: true })
+    const modifyDescription = core.getInput('MODIFY_DESCRIPTION', {
+      required: false,
+    })
 
     const prInfo = await getPRInfo()
     if (!prInfo) {
@@ -46,10 +52,31 @@ async function run() {
 
     const uniqueIssueNumbers = Array.from(new Set(issueNumbers))
 
-    const text = `This PR closes #${uniqueIssueNumbers.join(', #')}`
+    const text = `This PR closes #${uniqueIssueNumbers.join(', closes #')}.`
 
     const client = new github.GitHub(token)
-    await createComment(client, prNumber, text)
+
+    if (modifyDescription) {
+      let body = github.context.payload.pull_request!.body || ''
+      body = body.replace(
+        new RegExp(
+          `\\n\\n${ISSUES_START_TAG}[\\w\\W\\s\\S]*${ISSUES_END_TAG}`,
+          'g'
+        ),
+        ''
+      )
+
+      body += '\n\n' + ISSUES_START_TAG + text + ISSUES_END_TAG
+
+      await client.pulls.update({
+        repo: github.context.payload.repository!.name,
+        owner: github.context.payload.repository!.owner.login,
+        pull_number: github.context.payload.pull_request!.number,
+        body: body,
+      })
+    } else {
+      await createComment(client, prNumber, text)
+    }
   } catch (error) {
     core.error(error)
     core.setFailed(error.message)
